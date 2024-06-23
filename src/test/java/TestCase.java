@@ -1,15 +1,13 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.Assert.assertEquals;
+
 
 public class TestCase {
-
 
     @Test
     void testFactorialOfZero() {
@@ -17,28 +15,40 @@ public class TestCase {
         assertEquals(BigInteger.ONE, actual);
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "1, 1",
-            "2, 2",
-            "3, 6",
-            "4, 24",
-            "5, 120"
-    })
-    void testFactorialOfPositiveNumber(int number, BigInteger expected) {
+    @Test(dataProvider = "positiveNumbers")
+    public void testFactorialOfPositiveNumber(int number, BigInteger expected) {
         BigInteger actual = Factorial.getFactorial(number);
         assertEquals(expected, actual);
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-1, -5, -10})
-    void testFactorialOfNegativeNumbers(int input) {
+    @DataProvider(name = "positiveNumbers")
+    public Object[][] positiveNumbers() {
+        return new Object[][]{
+                {1, BigInteger.ONE},
+                {2, new BigInteger("2")},
+                {3, new BigInteger("6")},
+                {4, new BigInteger("24")},
+                {5, new BigInteger("120")}
+        };
+    }
+
+    @Test(dataProvider = "negativeNumbers")
+    public void testFactorialOfNegativeNumbers(int input, String expectedErrorMessage) {
         try {
             Factorial.getFactorial(input);
-            Assertions.fail("Ожидалось, что будет сгенерировано исключение IllegalArgumentException.");
+            Assert.fail("Ожидалось, что будет сгенерировано исключение IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
-            assertEquals("Факториал — функция, определённая на множестве неотрицательных целых чисел.", e.getMessage());
+            assertEquals(expectedErrorMessage, e.getMessage());
         }
+    }
+
+    @DataProvider(name = "negativeNumbers")
+    public Object[][] negativeNumbers() {
+        return new Object[][]{
+                {-1, "Факториал — функция, определённая на множестве неотрицательных целых чисел."},
+                {-5, "Факториал — функция, определённая на множестве неотрицательных целых чисел."},
+                {-10, "Факториал — функция, определённая на множестве неотрицательных целых чисел."}
+        };
     }
 
     @Test
