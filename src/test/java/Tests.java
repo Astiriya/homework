@@ -14,7 +14,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Main {
+public class Tests {
 
     private static WebDriver driver;
     private static WebDriverWait wait;
