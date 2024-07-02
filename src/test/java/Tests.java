@@ -44,6 +44,42 @@ public class Tests {
     }
 
     @Test
+    public void testVisaLogo() {
+        WebElement visaLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[1]/img"));
+        WebElement VisaLogoOrig = driver.findElement(By.xpath("//img[@alt='Visa']"));
+        Assertions.assertTrue(visaLogo.equals(VisaLogoOrig), "Логотип 'Visa' отсутствует на требуемом месте.");
+    }
+
+    @Test
+    public void testVisaVerifiedByVisaLogo() {
+        WebElement verifiedByVisaLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[2]/img"));
+        WebElement verifiedByVisaLogoOrig = driver.findElement(By.xpath("//img[@alt='Verified By Visa']"));
+        Assertions.assertTrue(verifiedByVisaLogo.equals(verifiedByVisaLogoOrig), "Логотип 'Verified By Visa' отсутствует на требуемом месте.");
+    }
+
+    @Test
+    public void testMasterCardLogo() {
+        WebElement masterCardLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[3]/img"));
+        WebElement masterCardLogoOrig = driver.findElement(By.xpath("//img[@alt='MasterCard']"));
+        Assertions.assertTrue(masterCardLogo.equals(masterCardLogoOrig), "Логотип 'MasterCard' отсутствует на требуемом месте.");
+    }
+
+    @Test
+    public void testMasterCardSecureCodeLogo() {
+        WebElement masterCardSecureCodeLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[4]/img"));
+        WebElement masterCardSecureCodeLogoOrig = driver.findElement(By.xpath("//img[@alt='MasterCard Secure Code']"));
+        Assertions.assertTrue(masterCardSecureCodeLogo.equals(masterCardSecureCodeLogoOrig), "Логотип 'MasterCardSecureCode' отсутствует на требуемом месте.");
+    }
+
+    @Test
+    public void testBelcardLogo() {
+        WebElement belcardLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[5]/img"));
+        WebElement verifiedByVisaLogoOrig = driver.findElement(By.xpath("//img[@alt='Белкарт']"));
+        Assertions.assertTrue(belcardLogo.equals(verifiedByVisaLogoOrig), "Логотип 'Belcard' отсутствует на требуемом месте.");
+
+    }
+
+    @Test
     public void testOnlineRechargeLink() {
         WebElement moreDetailsLink = driver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/a"));
         assertTrue(moreDetailsLink.isDisplayed(), "Ссылка 'Подробнее о сервисе' не отображается на странице");
@@ -52,35 +88,6 @@ public class Tests {
                 "Ссылка 'Подробнее о сервисе' ведет на неправильный URL");
     }
 
-    @Test
-    public void testVisaLogo() {
-        WebElement visaLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[1]/img"));
-        Assertions.assertNotNull(visaLogo, "Visa logo is not present on the page");
-    }
-
-    @Test
-    public void testVisaVerifiedByVisaLogo() {
-        WebElement verifiedByVisaLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[2]/img"));
-        Assertions.assertNotNull(verifiedByVisaLogo, "Visa Verified By Visa logo is not present on the page");
-    }
-
-    @Test
-    public void testMasterCardLogo() {
-        WebElement masterCardLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[3]/img"));
-        Assertions.assertNotNull(masterCardLogo, "MasterCard logo is not present on the page");
-    }
-
-    @Test
-    public void testMasterCardSecureCodeLogo() {
-        WebElement masterCardSecureCodeLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[4]/img"));
-        Assertions.assertNotNull(masterCardSecureCodeLogo, "MasterCard Secure Code logo is not present on the page");
-    }
-
-    @Test
-    public void testBelcardLogo() {
-        WebElement belcardLogo = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/div[2]/ul/li[5]/img"));
-        Assertions.assertNotNull(belcardLogo, "Belcard logo is not present on the page");
-    }
 
     @Test
     public void testOnlinePaymentWithoutCommission() {
@@ -95,8 +102,7 @@ public class Tests {
 
         WebElement continueButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='pay-connection']/button")));
         continueButton.click();
-
-        WebElement modalWindow = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("app-wrapper")));
-        assertTrue(modalWindow.isDisplayed(), "Модальное окно не открылось после нажатия кнопки 'Продолжить'");
+        WebElement contentWrapper = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bepaid-iframe")));
+        assertTrue(contentWrapper.isDisplayed(), "Окно с классом bepaid-iframe не появилось");
     }
 }
