@@ -5,68 +5,61 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-    public class CommunicationServicesTests {
-        private static WebDriver driver;
-        private static WebDriverWait wait;
+public class CommunicationServicesTests {
+    private static WebDriver driver;
+    private static WebDriverWait wait;
 
-        @BeforeAll
-        static public void setUp() {
-            System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-            driver = new ChromeDriver();
-            wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-            driver.get("http://mts.by");
-            WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[6]/main/div/div[2]/div/div[2]/button[3]")));
-            cookieAcceptButton.click();
-        }
-
-        @AfterAll
-        public static void tearDown()  {
-            driver.quit();
-        }
-
-        @Test
-        @Order(1)
-        public void testNumberField() {
-            WebElement numberField = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
-            String actualPlaceNumber = numberField.getAttribute("placeholder");
-            String expectedPlaceNumber = "Номер телефона";
-            Assertions.assertTrue(actualPlaceNumber.equals(expectedPlaceNumber), "Атрибут 'Placeholder' не верный.");
-        }
-        @Test
-        @Order(2)
-        public void testSumField() {
-            WebElement sumField = driver.findElement(By.id("connection-sum"));
-            String actualPlaceSum = sumField.getAttribute("placeholder");
-            String expectedPlaceSum = "Сумма";
-            Assertions.assertTrue(actualPlaceSum.equals(expectedPlaceSum), "Атрибут 'Placeholder' не верный.");
-        }
-        @Test
-        @Order(3)
-        public void testEmailField() {
-            WebElement emailField = driver.findElement(By.id("connection-email"));
-            String actualPlaceEmail = emailField.getAttribute("placeholder");
-            String expectedPlaceEmail = "E-mail для отправки чека";
-            Assertions.assertTrue(actualPlaceEmail.equals(expectedPlaceEmail), "Атрибут 'Placeholder' не верный.");
-        }
-        @Test
-        @Order(4)
-        public void testNumberLabel() {
-            WebElement numberLabel = driver.findElement(By.xpath("//label[@for='connection-phone']"));
-            String actualPlaceNumberLabel = numberLabel.getText();
-            String expectedPlaceNumberLabel = "+375";
-            Assertions.assertTrue(actualPlaceNumberLabel.equals(expectedPlaceNumberLabel), "Атрибут 'Text' не верный.");
-        }
-        @Test
-        @Order(5)
-        public void testSumLabel() {
-            WebElement sumLabel = driver.findElement(By.xpath("//label[@for='connection-sum']"));
-            String actualPlaceSumLabel = sumLabel.getText();
-            String expectedPlaceSumLabel = "Руб.";
-            Assertions.assertTrue(actualPlaceSumLabel.equals(expectedPlaceSumLabel), "Атрибут 'Text' не верный.");
-        }
+    @BeforeAll
+    static public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        driver.get("http://mts.by");
+        WebElement cookieAcceptButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[6]/main/div/div[2]/div/div[2]/button[3]")));
+        cookieAcceptButton.click();
     }
+
+    @AfterAll
+    public static void tearDown() {
+        driver.quit();
+    }
+
+    @Test
+    public void testPlaceholderConnectionPhone() {
+        WebElement connectionPhone = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
+        String expectedPlaceholderConnectionPhone = "Номер телефона";
+        assertEquals(expectedPlaceholderConnectionPhone, connectionPhone.getAttribute("placeholder"), "Атрибут 'Placeholder' не верный.");
+    }
+
+    @Test
+    public void testPlaceholderConnectionSum() {
+        WebElement connectionSum = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-sum")));
+        String expectedPlaceholderConnectionSum = "Сумма";
+        assertEquals(expectedPlaceholderConnectionSum, connectionSum.getAttribute("placeholder"), "Атрибут 'Placeholder' не верный.");
+    }
+
+    @Test
+    public void testPlaceholderConnectionEmail() {
+        WebElement connectionEmail = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-email")));
+        String expectedPlaceholderConnectionEmail = "E-mail для отправки чека";
+        assertEquals(expectedPlaceholderConnectionEmail, connectionEmail.getAttribute("placeholder"), "Атрибут 'Placeholder' не верный.");
+    }
+
+    @Test
+    public void testConnectionPhoneLabel() {
+        WebElement connectionPhoneLabel = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='connection-phone']")));
+        String expectedConnectionPhoneLabel = "+375";
+        assertEquals(expectedConnectionPhoneLabel, connectionPhoneLabel.getText(), "Текст лейбла не соответствует ожидаемому.");
+    }
+
+    @Test
+    public void testConnectionSumLabel() {
+        WebElement connectionSumLabel = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='connection-sum']")));
+        String expectedConnectionSumLabel = "Руб.";
+        assertEquals(expectedConnectionSumLabel, connectionSumLabel.getText(), "Текст лейбла не соответствует ожидаемому.");
+    }
+}
 
