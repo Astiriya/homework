@@ -3,11 +3,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+@DisplayName("Тестирование полей раздела \"Рассрочка\"")
 public class InstallmentTests {
 
     private static WebDriver driver;
@@ -29,10 +38,24 @@ public class InstallmentTests {
 
     @AfterAll
     public static void tearDown() {
+        LogEntries browserLogs = driver.manage().logs().get(LogType.BROWSER);
+        List<LogEntry> allLogRows = browserLogs.getAll();
+
+        if (!allLogRows.isEmpty()) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("browser_logs.txt", true))) {
+                for (LogEntry logEntry : allLogRows) {
+                    writer.write(logEntry.toString());
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         driver.quit();
     }
 
     @Test
+    @DisplayName("Проверка плейсхолдера у поля \"Номер счета\" в разделе \"Рассрочка\"")
     public void testPlaceholderInstalmentScore() {
         WebElement instalmentScore = wait.until(ExpectedConditions.elementToBeClickable(By.id("score-instalment")));
         String expectedPlaceholderInstalmentScore = "Номер счета на 44";
@@ -40,6 +63,7 @@ public class InstallmentTests {
     }
 
     @Test
+    @DisplayName("Проверка лейбла валюты у поля \"Сумма\" в разделе \"Рассрочка\"")
     public void testInstalmentSumLabel() {
         WebElement instalmentSumLabel = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//label[@for='instalment-sum']")));
         String expectedInstalmentSumLabel = "Руб.";
@@ -47,6 +71,7 @@ public class InstallmentTests {
     }
 
     @Test
+    @DisplayName("Проверка плейсхолдера у поля \"Сумма\" в разделе \"Рассрочка\"")
     public void testPlaceholderInstalmentSum() {
         WebElement instalmentSum = wait.until(ExpectedConditions.elementToBeClickable(By.id("instalment-sum")));
         String expectedPlaceholderInstalmentSum = "Сумма";
@@ -54,6 +79,7 @@ public class InstallmentTests {
     }
 
     @Test
+    @DisplayName("Проверка плейсхолдера у поля \"E-mail\" в разделе \"Рассрочка\"")
     public void testPlaceholderInstalmentEmail() {
         WebElement instalmentEmail = wait.until(ExpectedConditions.elementToBeClickable(By.id("instalment-email")));
         String expectedPlaceholderInstalmentEmail = "E-mail для отправки чека";
